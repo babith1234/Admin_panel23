@@ -1,0 +1,17 @@
+.details,
+.entry {
+  background-color: rgba(9, 6, 50, 0.448);
+  border-radius: 20px;
+}
+@media only screen and (max-width: 740px) {
+  .parent {
+    flex-direction: column;
+    width: 100vw;
+  }
+  .details {
+    width: 100vw;
+  }
+  .entry {
+    width: 100vw;
+  }
+}

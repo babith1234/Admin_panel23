@@ -1,0 +1,284 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bellefair&family=Caprasimo&family=Catamaran:wght@700&family=Fraunces:opsz,wght@9..144,700&family=Gabarito:wght@400;500&family=Heebo:wght@600&family=Kanit:wght@500&family=Montserrat:wght@300;400;500;900&family=Nunito:ital,wght@0,800;1,1000&family=Open+Sans:wght@300&family=Oswald:wght@600&family=Outfit&family=Phudu:wght@500&family=Poppins:ital,wght@1,300;1,500;1,600;1,900&family=Roboto+Slab:wght@600&family=Roboto:ital,wght@1,700;1,900&family=Young+Serif&display=swap'); */
+
+.navbar-custom {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  /* border-radius: 10px; */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* font-family: 'Fraunces', serif; */
+  /* font-weight: bold; */
+  font-family: 'Iceland', sans-serif;
+  letter-spacing: 0.1rem;
+  font-size: 1.4rem;
+}
+
+
+
+ .nav-item.active{
+  border-bottom: 3px solid rgb(255, 215, 72); 
+}
+
+
+
+ .nav-item  {
+  position: relative;
+  transition: color 0.3s ease; 
+}
+
+ .nav-item:not(.active)::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%; 
+  width: 0;
+  height: 3px;
+  background-color: #ffd700; 
+  transition: width 0.5s ease, left 0.5s ease; 
+  border-radius: 3px;
+  
+}
+
+/* Navbar item hover effect */
+/* .navbar-nav-custom .nav-item :hover {
+  color: #ffd700; 
+} */
+
+
+
+
+/* Slowly reveal the underline on hover */
+ .nav-item:not(.active):hover::before {
+  left: 0; /* Move the underline from the middle to the start */
+  width: 100%; /* Fully reveal the underline on hover */
+}
+
+
+
+
+
+.navbar-nav-custom .nav-item {
+  transition: border-bottom 0.3s ease; 
+} 
+
+
+.navbar-brand-custom img {
+  width: 15vw; 
+  
+}
+
+
+
+ .navbar-toggler-icon-custom {
+  /* background-color: rgb(255, 215, 72);
+  box-shadow: 0 0 10px rgb(255, 180, 18); */
+
+  background-color: transparent;
+
+  /* box-shadow: 0 0 10px rgb(255, 180, 18); */
+ 
+}
+/* Add this CSS to your existing Navbar.css file */
+
+@keyframes rotateIcon {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(90deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(45deg) scale(1);
+  }
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' width='30' height='30'><rect width='30' height='2' rx='1' fill='%23fff' transform='translate(0 8)'/><rect width='30' height='2' rx='1' fill='%23fff' transform='translate(0 15)'/><rect width='30' height='2' rx='1' fill='%23fff' transform='translate(0 22)'/></svg>");
+  transition: background-image 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' width='30' height='30'><line x1='5' y1='5' x2='25' y2='25' stroke='%23fff' stroke-width='2'/><line x1='5' y1='25' x2='25' y2='5' stroke='%23fff' stroke-width='2'/></svg>");
+  animation: rotateIcon 0.5s ease;
+}
+
+
+/* Navbar.css */
+
+/* Add this CSS to your existing Navbar.css file */
+
+.navbar-toggler {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  
+}
+
+.navbar-toggler:hover {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+
+
+ .navbar-nav .nav-item .nav-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+} 
+
+/* .nav-item .lg-btn{
+  text-decoration: none;
+} */
+
+
+
+
+
+
+/* .navbar-nav-custom .nav-item-custom .nav-link:hover {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); 
+  border-radius: 5px; 
+}  */
+
+ /* .reg-btn,
+.lg-btn {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); 
+  border: 1px solid rgba(255, 255, 255, 0.2); 
+  border-radius: 5px; 
+  transition: background 0.3s ease;
+} */
+
+ /* .reg-btn:hover,
+.lg-btn:hover {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); 
+  border: none;
+}  */
+
+
+ .glow-on-hover {
+  border: none;
+  outline: none;
+  color: #fff;
+  background: black;
+  height: 2.4rem;
+  /* font-size: 1.5rem; */
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+.glow-on-hover:before {
+  content: '';
+  /* background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000); */
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+.glow-on-hover:active {
+  color: #000;
+}
+.glow-on-hover:active:after {
+  background: transparent;
+}
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgb(255, 2, 2);
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+} 
+
+
+@media (max-width: 991px) {
+  .navbar-custom {
+    position: fixed;
+    width: 100%;
+    z-index: 2000;
+    border-radius: 0;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .navbar-nav-custom .nav-item {
+    padding: 15px 0;
+    text-align: center;
+  }
+ 
+  .nav-item.active{
+    left: calc(51% - 70px);
+    width: 100px;
+
+    
+  }
+  .nav-item:not(.active)::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background-color: #ffd700;
+    transition: width 0.5s ease, left 0.5s ease;
+    border-radius: 3px;
+    transform: translateX(-50%);
+  }
+
+  .nav-item:not(.active):hover::before {
+    left: 50%;
+    width: 80px; 
+  }
+
+  .small-screen {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 20px;
+    text-align: center;
+    height: 100vh;
+  }
+}
+
+.alert--error {
+  left:30%;
+  background-color: #4b0082;
+}
+
+
+
