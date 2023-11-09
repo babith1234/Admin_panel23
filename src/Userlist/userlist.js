@@ -35,7 +35,7 @@ const UserData = () => {
   const thStyle = {
     border: "5px solid yellow",
     padding: "10px",
-    color: "yellow",
+    color: "orange",
   };
 
   const tdStyle = {
@@ -84,7 +84,7 @@ const UserData = () => {
             width: "100vw",
             padding: "10px",
             borderRadius: "24px",
-            backgroundColor: "yellow",
+            backgroundColor: "orange",
           }}
         />
         <br></br>
@@ -140,6 +140,7 @@ const UserData = () => {
               placeholder="Select an Event..."
               isSearchable
               styles={{
+               
                 option: (styles) => {
                   return {
                     ...styles,

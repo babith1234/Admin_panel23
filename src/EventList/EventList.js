@@ -52,13 +52,13 @@ const EventList = () => {
   };
 
   const thStyle = {
-    border: "5px solid yellow",
+    border: "5px solid orange",
     padding: "10px",
-    color: "yellow",
+    color: "white",
   };
 
   const tdStyle = {
-    border: "5px solid yellow",
+    border: "5px solid orange",
     padding: "8px",
   };
 
@@ -98,7 +98,7 @@ const EventList = () => {
               width: "100vw",
               padding: "10px",
               borderRadius: "24px",
-              backgroundColor: "yellow",
+              backgroundColor: "orange",
             }}
           />
           <br></br>

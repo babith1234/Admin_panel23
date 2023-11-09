@@ -187,7 +187,7 @@ const Navbar = () => {
                   style={{ color: "white" }}
                   onClick={() => handleLinkClick("/")}
                 >
-                  HOME
+                  EVENT-LIST
                 </Link>
               </li>
               <li
@@ -254,7 +254,7 @@ const Navbar = () => {
                       <Link
                         to="/login"
                         className="text-decoration-none"
-                        style={{ color: "white" }}
+                        style={{ color: "black" }}
                       >
                         LOGIN
                       </Link>
@@ -265,7 +265,7 @@ const Navbar = () => {
                       <Link
                         to="/register"
                         className="text-decoration-none"
-                        style={{ color: "white" }}
+                        style={{ color: "black" }}
                       >
                         REGISTER
                       </Link>

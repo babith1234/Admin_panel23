@@ -1,40 +1,55 @@
 import Navbar from "../Navbar/Navbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import darkbg4 from "../Signup/darkbg4.jpeg";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const FullList = () => {
-  const data = [
-    { value1: "A1", value2: "B1", value3: "C1" },
-    { value1: "A2", value2: "B2", value3: "C2" },
-    { value1: "A3", value2: "B3", value3: "C3" },
-  ];
+  const [participants, setParticipants] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const db = getFirestore();
+  const participantsCollection = collection(db, "Participant");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const snapshot = await getDocs(participantsCollection);
+        const participantData = snapshot.docs.map((doc) => ({
+          uid: doc.id,
+          ...doc.data(),
+        }));
+        setParticipants(participantData);
+      } catch (error) {
+        console.error("Error fetching participants:", error);
+      }
+    };
+
+    fetchData();
+  }, [participantsCollection]);
+
   const tableStyle = {
-    border: "5px solid yellow",
+    border: "5px solid orange",
     borderCollapse: "collapse",
     width: "100vw",
-
-    // marginLeft: "25vw",
-    // marginTop: "25vh",
   };
 
   const thStyle = {
-    border: "5px solid yellow",
+    border: "5px solid orange",
     padding: "10px",
-    color: "yellow",
+    color: "orange",
   };
 
   const tdStyle = {
-    border: "5px solid yellow",
+    border: "5px solid orange",
     padding: "8px",
+    color:"white"
   };
-  const [search, setSearch] = useState("");
 
-  const filteredData = data.filter((row) => {
-    // Customize this condition to filter based on your specific data structure
+  const filteredData = participants.filter((row) => {
     return (
-      row.value1.toLowerCase().includes(search.toLowerCase()) ||
-      row.value2.toLowerCase().includes(search.toLowerCase()) ||
-      row.value3.toLowerCase().includes(search.toLowerCase())
+      row.uid.toLowerCase().includes(search.toLowerCase()) ||
+      row.Name.toLowerCase().includes(search.toLowerCase()) ||
+      row.Contact.toLowerCase().includes(search.toLowerCase())
     );
   });
 
@@ -53,12 +68,11 @@ const FullList = () => {
         }}
       >
         <Navbar />
-      <center> <h1 style={{ color: "white",position:"relative",top:"20vh" }}>
-        
-      
-          COMPLETE USER'S LIST
+        <center>
+          <h1 style={{ color: "white", position: "relative", top: "20vh" }}>
+            COMPLETE USER'S LIST
           </h1>
-          </center> 
+        </center>
         <input
           type="text"
           placeholder="Search Participant..."
@@ -69,7 +83,7 @@ const FullList = () => {
             width: "100vw",
             padding: "10px",
             borderRadius: "24px",
-            backgroundColor:"yellow"
+            backgroundColor: "orange",
           }}
         />
         <br></br>
@@ -83,11 +97,11 @@ const FullList = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                <td style={tdStyle}>{row.value1}</td>
-                <td style={tdStyle}>{row.value2}</td>
-                <td style={tdStyle}>{row.value3}</td>
+            {filteredData.map((row) => (
+              <tr key={row.uid}>
+                <td style={tdStyle}>{row.uid}</td>
+                <td style={tdStyle}>{row.Name}</td>
+                <td style={tdStyle}>{row.Contact}</td>
               </tr>
             ))}
           </tbody>

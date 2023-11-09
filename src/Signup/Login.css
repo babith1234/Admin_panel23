@@ -1,0 +1,74 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins");
+
+.login-container-custom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.card-title-custom {
+  border-bottom: 5px solid #ffffff;
+  text-align: center;
+  padding-bottom: 10px;
+  font-weight: bolder;
+}
+.auth-card-custom {
+  border-radius: 34px;
+  opacity: 1.5;
+  margin-top: -18px;
+}
+.content-container {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+
+}
+.white-text {
+  color: #fff;
+}
+
+/* Optionally, style the placeholder text specifically */
+.white-text::placeholder {
+  color: #fff;
+}
+/* ForgotPassword.css */
+/* Style the autofill suggestion dropdown */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    background-color: transparent !important; /* Set background to transparent */
+}
+
+.alert{
+  position: fixed;
+    top: 0;
+    left: 35%;
+    z-index: 9999;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    /* padding: 1rem 3rem; */
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+    color: whitesmoke;
+}
+
+.alert--success{
+  background-color: #20bf6b;
+  max-width: 14rem;
+  max-height: 12rem;
+}
+
+.hover-yellow{
+  color: white;
+}
+
+.hover-yellow:hover {
+  color: orange;
+  /* box-shadow: 0 0 10px yellow; */
+}
+
