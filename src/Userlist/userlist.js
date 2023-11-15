@@ -1,61 +1,195 @@
+import React, { useState, useEffect } from "react";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Navbar from "../Navbar/Navbar";
 import Select from "react-select";
-import { useState } from "react";
 import darkbg4 from "../Signup/darkbg4.jpeg";
 import "./userlist.css";
 
 const UserData = () => {
-  const data = [
-    { value1: "A1", value2: "B1", value3: "C1" },
-    { value1: "A2", value2: "B2", value3: "C2" },
-    { value1: "A3", value2: "B3", value3: "C3" },
-  ];
-  const options = [
-    { value: "Item 1", label: "UI battles" },
-    { value: "Item 2", label: "Code Quest" },
-    { value: "Item 3", label: "Sky Dive" },
-    { value: "Item 4", label: "Cad carnival" },
-    { value: "Item 5", label: "Bot Sumo" },
-    { value: "Item 6", label: "Lift off" },
-    { value: "Item 7", label: "Line follower" },
-    { value: "Item 8", label: "Robo soccer" },
-    { value: "Item 9", label: "Terraglide" },
-    { value: "Item 10", label: "Eclash" },
-    { value: "Item 11", label: "Firepower" },
-  ];
-  const tableStyle = {
-    border: "5px solid yellow",
-    borderCollapse: "collapse",
-    width: "100vw",
+  const auth = getAuth();
+  const db = getFirestore();
 
-    // marginLeft: "25vw",
-    // marginTop: "25vh",
-  };
-
-  const thStyle = {
-    border: "5px solid yellow",
-    padding: "10px",
-    color: "orange",
-  };
-
-  const tdStyle = {
-    border: "5px solid yellow",
-    padding: "8px",
-  };
+  const [user, setUser] = useState(null);
   const [search, setSearch] = useState("");
-
-  const filteredData = data.filter((row) => {
-    // Customize this condition to filter based on your specific data structure
-    return (
-      row.value1.toLowerCase().includes(search.toLowerCase()) ||
-      row.value2.toLowerCase().includes(search.toLowerCase()) ||
-      row.value3.toLowerCase().includes(search.toLowerCase())
-    );
+  const [participantDetails, setParticipantDetails] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedEventName, setSelectedEventName] = useState(null); // Added state
+  const [searchButtonClicked, setSearchButtonClicked] = useState(false);
+  const [team, setTeam] = useState({
+    "Member 1": "",
   });
+  const [count, setCount] = useState(1);
+
+  const handleChange = (e) => {
+    setTeam({
+      ...team,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const increaseCount = () => {
+    setTeam({
+      ...team,
+      [`Member ${count + 1}`]: "",
+    });
+    setCount(count + 1);
+  };
+
+  const decreaseCount = (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+  
+    if (count > 1) {
+      const newTeam = { ...team };
+      delete newTeam[`Member ${count}`];
+      setTeam(newTeam);
+      setCount(count - 1);
+    }
+  };
+  
+
+  const options = [
+    { value: 300, label: "UI BATTLES", maxlimit: 3 },
+    { value: 400, label: "CODE QUEST", maxlimit: 4 },
+    { value: 500, label: "BOT SUMO", maxlimit: 6 },
+    { value: 200, label: "FIRE POWER", maxlimit: 3 },
+    // ... add more options as needed
+  ];
+
+  const fetchData = async (uid) => {
+    try {
+      const participantRef = doc(db, "Participant", uid);
+      const docSnapshot = await getDoc(participantRef);
+
+      if (docSnapshot.exists()) {
+        setParticipantDetails({ uid, ...docSnapshot.data() });
+
+        // Fetch events from the "events" subcollection
+        const eventsRef = collection(db, "Participant", uid, "events");
+        const eventsSnapshot = await getDocs(eventsRef);
+        const eventsData = eventsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.id, // Assuming the document ID itself is the event name
+        }));
+        setEvents(eventsData);
+      } else {
+        setParticipantDetails(null);
+      }
+    } catch (error) {
+      console.error("Error fetching participant details:", error);
+    }
+  };
+
+  useEffect(() => {
+    const signInWithDefaultCredentials = async () => {
+      const email = "anudeep@gmail.com"; // Replace with the actual email
+      const password = "123456"; // Replace with the actual password
+
+      try {
+        const credentials = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const currentUser = credentials.user;
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Error logging in with default credentials:", error);
+      }
+    };
+
+    // Check if the user is already authenticated
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      setUser(currentUser);
+    } else {
+      // If not authenticated, sign in with default credentials
+      signInWithDefaultCredentials();
+    }
+  }, [auth, setUser]);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
+
+  const handleSearchButtonClick = () => {
+    setSearchButtonClicked(false); // Reset to false before each search
+
+    if (search && user) {
+      console.log("Fetching data for UID:", search);
+      fetchData(search);
+      setSearchButtonClicked(true);
+    }
+  };
+
+  const handleEventChange = (selectedOption) => {
+    setSelectedEvent(selectedOption);
+    setSelectedEventName(selectedOption.label); // Set the selected event name
+  };
+
+ // ... (previous code)
+
+async function handleUserWhilePay() {
+  try {
+    console.log(selectedEvent);
+
+    const db = getFirestore();
+
+    // Construct participant document reference
+    const participantRef = doc(db, "Participant", search);
+    const docSnap = await getDoc(participantRef);
+
+    if (docSnap.exists()) {
+      console.log("Document fetched:", docSnap.data());
+
+      if (selectedEvent) {
+        // Construct event document reference inside the events subcollection
+        const eventDocRef = doc(db, `Participant/${search}/events/${selectedEventName}`);
+        await setDoc(eventDocRef, {
+          payment: true,
+          report: false,
+          signature: "Help Desk",
+          teamMembers: team,
+          // ... other data
+        });
+
+        // Construct event list document reference
+        const eventListDocRef = doc(db, `EventList/${selectedEventName}/List/${search}`);
+        await setDoc(eventListDocRef, {
+          flag: search,
+        });
+
+        console.log("Document updated successfully!");
+
+        // Reset the state variables
+        setSelectedEvent(null);
+        setSelectedEventName(null);
+        setTeam({
+          "Member 1": "",
+        });
+        setCount(1);
+        setSearch(""); // Reset the search bar
+      } else {
+        console.log("No selected event!");
+      }
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.error("Error fetching/updating document:", error);
+  }
+}
+
+// ... (rest of the code)
+
 
   return (
     <>
@@ -69,14 +203,13 @@ const UserData = () => {
       >
         <Navbar />
         <center>
-          {" "}
           <h1 style={{ color: "white", position: "relative", top: "20vh" }}>
             PARTICIPANT DETAILS
           </h1>
         </center>
         <input
           type="text"
-          placeholder="Search Participant..."
+          placeholder="Search Participant by UID..."
           value={search}
           onChange={handleSearchChange}
           style={{
@@ -87,70 +220,127 @@ const UserData = () => {
             backgroundColor: "orange",
           }}
         />
+        <button
+          onClick={handleSearchButtonClick}
+          style={{
+            padding: "10px",
+            borderRadius: "24px",
+            backgroundColor: "green",
+            color: "white",
+            cursor: "pointer",
+            marginTop: "10px",
+          }}
+        >
+          Search
+        </button>
         <br></br>
         <br></br>
-        {/* <table style={tableStyle}>
-          <thead>
-            <tr>
-              <th style={thStyle}>UID</th>
-              <th style={thStyle}>NAME</th>
-              <th style={thStyle}>CONTACT</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                <td style={tdStyle}>{row.value1}</td>
-                <td style={tdStyle}>{row.value2}</td>
-                <td style={tdStyle}>{row.value3}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table> */}
-        <div className="parent d-flex m-2">
-          <div
-            className="details  text-white m-2 p-5"
-            style={{ width: "50%", height: "auto" }}
-          >
-            <h2>DETAILS </h2>
-            <br></br>
-            <br></br>
-            <div className="sub-heading">
-              <h3>Name: Babith</h3>
+        {participantDetails ? (
+          <div className="parent d-flex m-2">
+            <div
+              className="details text-white m-2 p-5"
+              style={{ width: "50%", height: "auto" }}
+            >
+              <h2>DETAILS </h2>
+              <br></br>
+              <br></br>
+              <div className="sub-heading">
+                <h3>Name: {participantDetails.Name}</h3>
+                {/* Add more details as needed */}
+              </div>
+              <br></br>
+              <br></br>
+              <h2>EVENT LIST</h2>
+              <ul>
+                {events.map((event, index) => (
+                  <li key={index}>{event.name}</li>
+                ))}
+              </ul>
             </div>
-            <br></br>
-            <br></br>
-            <h2>EVENT LIST</h2>
-            <ul>
-              <li>UI BATTLES</li>
-              <li>CODE QUEST</li>
-            </ul>
+            <div
+              className="entry text-white m-2 p-5"
+              style={{ width: "50%", height: "auto" }}
+            >
+              <h2> ADD EVENTS</h2>
+              <center>
+                <h1 className="text-white">Event List</h1>
+              </center>
+              <Select
+                options={options}
+                placeholder="Select an Event..."
+                isSearchable
+                onChange={handleEventChange}
+                styles={{
+                  option: (styles) => {
+                    return {
+                      ...styles,
+                      color: "black",
+                    };
+                  },
+                }}
+              />
+              {selectedEvent && (
+                <>
+                  <p style={{ marginTop: "10px" }}>COST: {selectedEvent.value}</p>
+                  <h2> TEAM FORM</h2>
+                  <form className="team-form">
+                    {Object.keys(team).map((member, index) => (
+                      <div key={index} className="input-container">
+                        <input
+                          type="text"
+                          name={member}
+                          className="input-field text-white white-text border p-2 m-2"
+                          placeholder={`Member ${index + 1}`}
+                          required
+                          onChange={handleChange}
+                          value={team[member]}
+                          style={{
+                            backgroundColor: "transparent",
+                          }}
+                        />
+                      </div>
+                    ))}
+                    <div className="button-list">
+                      {Object.keys(team).length < selectedEvent.maxlimit ? (
+                        <button
+                          className="glow-on-hover p-2 fs-4"
+                          style={{ width: "15rem" }}
+                          onClick={increaseCount}
+                        >
+                          Add Member
+                        </button>
+                      ) : (
+                        <button className="glow-on-hover p-2 fs-4">Max limit reached</button>
+                      )}
+                      <button
+                        className="glow-on-hover p-2 fs-4"
+                        style={{ width: "15rem" }}
+                        onClick={(e) => decreaseCount(e)}
+                      >
+                        Remove Member
+                      </button>
+                    </div>
+                  </form>
+                  <button
+                    className="glow-on-hover p-2 fs-4"
+                    style={{ width: "15rem" }}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      console.log("Submit button clicked");
+                      await handleUserWhilePay(); // Call the handleUserWhilePay function
+                    }}
+                  >
+                    Submit
+                  </button>
+                </>
+              )}
+            </div>
           </div>
-          <div
-            className="entry  text-white m-2 p-5"
-            style={{ width: "50%", height: "auto" }}
-          >
-            <h2> ADD EVENTS</h2>
-            <center>
-              {" "}
-              <h1 className="text-white">Event List</h1>
-            </center>
-            <Select
-              options={options}
-              placeholder="Select an Event..."
-              isSearchable
-              styles={{
-               
-                option: (styles) => {
-                  return {
-                    ...styles,
-                    color: "black",
-                  };
-                },
-              }}
-            />
+        ) : searchButtonClicked ? (
+          <div className="text-white">
+            Participant not found or details not loaded.
           </div>
-        </div>
+        ) : null}
       </div>
     </>
   );

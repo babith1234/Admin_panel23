@@ -1,6 +1,11 @@
 body::-webkit-scrollbar{
-    background:url("../Signup/darkbg4.jpeg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: none;
-  }
+  background:url("../Signup/darkbg4.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: none;
+}
+
+.custom-select {
+  margin-top: 20vh;
+  /* Add more custom styles as needed */
+}
