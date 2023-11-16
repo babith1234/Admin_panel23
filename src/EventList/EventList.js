@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./EventList.css";
 import Navbar from "../Navbar/Navbar";
+import React from "react";
 import Select from "react-select";
 import {
   getFirestore,
@@ -11,6 +12,8 @@ import {
 } from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import darkbg4 from "../Signup/darkbg4.jpeg";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
+
 const db = getFirestore();
 
 // Define a function to fetch user data based on UID
@@ -106,15 +109,36 @@ const EventList = () => {
   // Fetch events from Firestore
   useEffect(() => {
     const fetchEvents = async () => {
-      const eventListSnapshot = await getDocs(collection(db, "EventList"));
-      const eventOptions = eventListSnapshot.docs.map((doc) => ({
-        value: doc.id,
-        label: doc.id,
-      }));
-      setEvents(eventOptions);
+      try {
+        const eventListRef = collection(db, "EventList");
+        const eventListSnapshot = await getDocs(eventListRef);
+  
+        console.log("EventList Snapshot:", eventListSnapshot.docs);
+  
+        // const eventOptions = eventListSnapshot.docs.map((doc) => ({
+        //   value: doc.data().eventName,  // Assuming eventName is a field in your document
+        //   label: doc.data().eventName,
+        // }));
+
+        const eventOptions = eventListSnapshot.docs.map((doc) => ({
+          value: doc.id,
+          label: doc.id,
+        }));
+        
+        
+  
+        console.log("Event Options:", eventOptions);
+  
+        setEvents(eventOptions);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
     };
+  
     fetchEvents();
   }, []);
+  
+  
 
   // Fetch participants when a specific event is selected
 
@@ -172,7 +196,19 @@ const EventList = () => {
   const tdStyle = {
     border: "5px solid orange",
     padding: "8px",
-    color: "white",
+    color: "orange"
+
+  };
+
+  const thStyle1 = {
+    padding: "10px",
+    color: "black",
+  };
+
+  const tdStyle1 = {
+    padding: "8px",
+  
+
   };
 
   return (
@@ -202,15 +238,16 @@ const EventList = () => {
           className="custom-select"
         />
 
-        <table style={tableStyle}>
+<table id="table" style={tableStyle}>
           <thead>
             <tr>
               <th style={thStyle}>SNO</th>
               <th style={thStyle}>UID</th>
               <th style={thStyle}>Name</th>
+              <th style={thStyle}>Email</th>
               <th style={thStyle}>College</th>
               <th style={thStyle}>Contact</th>
-              <th style={thStyle}>Team Members</th>{" "}
+              <th style={thStyle}>Team Members</th>
             </tr>
           </thead>
           <tbody>
@@ -219,6 +256,7 @@ const EventList = () => {
                 <td style={tdStyle}>{index + 1}</td>
                 <td style={tdStyle}>{participant.UID}</td>
                 <td style={tdStyle}>{participant.Name}</td>
+                <td style={tdStyle}>{participant.Email}</td>
                 <td style={tdStyle}>{participant.College}</td>
                 <td style={tdStyle}>{participant.Contact}</td>
                 <td style={tdStyle}>
@@ -227,7 +265,7 @@ const EventList = () => {
                       <div key={index}>
                         {Object.keys(event.teamMembers).map((memberKey) => (
                           <div key={memberKey}>
-                            {memberKey}: {event.teamMembers[memberKey]}
+                           {event.teamMembers[memberKey]}
                           </div>
                         ))}
                       </div>
@@ -237,6 +275,58 @@ const EventList = () => {
             ))}
           </tbody>
         </table>
+
+        <table id="table-to-xls" style={tableStyle}>
+          <thead>
+            <tr>
+              <th style={thStyle1}>SNO</th>
+              <th style={thStyle1}>UID</th>
+              <th style={thStyle1}>Name</th>
+              <th style={thStyle1}>Email</th>
+              <th style={thStyle1}>College</th>
+              <th style={thStyle1}>Contact</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            {userData.map((participant, index) => (
+              <React.Fragment key={participant.UID}>
+               
+                {/* Additional rows for each team member */}
+                {participant.events &&
+                  participant.events.map((event, eventIndex) => (
+                    Object.keys(event.teamMembers).map((memberKey, memberIndex) => (
+                      <tr key={`${participant.UID}-${eventIndex}-${memberIndex}`}>
+                        <td style={tdStyle1}>{index + 1}</td>
+                        <td style={tdStyle1}>{participant.UID}</td>
+                        <td style={tdStyle1}>
+                          <div key={memberKey}>
+                            {event.teamMembers[memberKey]}
+                          </div>
+                        </td>
+                        <td style={tdStyle1}>{participant.Email}</td>
+                        <td style={tdStyle1}>{participant.College}</td>
+                        <td style={tdStyle1}>{participant.Contact}</td>
+                       
+                      </tr>
+                    ))
+                  ))}
+              </React.Fragment>
+            ))}
+          </tbody>
+
+        </table>
+
+        <div style={{ marginTop: "20px" }}>
+          <ReactHTMLTableToExcel
+            id={`exportButton`}
+            className="download-table-xls-button"
+            table="table-to-xls"
+            filename={selectedEvent?.label}
+            sheet="tablexls"
+            buttonText="Export All Data"
+          />
+        </div>
       </div>
     </div>
   );
