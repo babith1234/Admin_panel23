@@ -57,11 +57,22 @@ const UserData = () => {
   
 
   const options = [
-    { value: 300, label: "UI BATTLES", maxlimit: 3 },
-    { value: 400, label: "CODE QUEST", maxlimit: 4 },
-    { value: 500, label: "BOT SUMO", maxlimit: 6 },
-    { value: 200, label: "FIRE POWER", maxlimit: 3 },
-    // ... add more options as needed
+    { value:300, label:"UI BATTLES", maxlimit:2 },
+    { value:300, label:"CODE QUEST", maxlimit:3 },
+    { value:500, label:"BOT SUMO", maxlimit:5 },
+    { value:200, label:"FIRE POWER", maxlimit:3 },
+    {value:500, label:"LINE FOLLOWER",maxlimit:5 },
+    {value:300, label:"CAD-CARNIVAL",maxlimit:3 },
+    {value:400, label:"MOMENTUM",maxlimit:4 },
+    {value:400, label:"TERRAGLIDE",maxlimit:4 },
+    {value:2500, label:"SKY DIVE",maxlimit:4 },
+    {value:200, label:"FRAMES",maxlimit:1 },
+    {value:200, label:"VISUAL VIBES",maxlimit:1 },
+    {value:500, label:"GOAL IN",maxlimit:5 },
+    {value:500, label:"EClash",maxlimit:4 },
+    {value:1000, label:"LIFT OFF!",maxlimit:5 },
+    {value:500, label:"FIRE POWER",maxlimit:6 },
+    
   ];
 
   const fetchData = async (uid) => {

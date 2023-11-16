@@ -86,11 +86,11 @@ const FullList = () => {
 
   return (
     <>
-      <div className="container-fluid vh-100 d-flex align-items-center  justify-content-center" style={{ backgroundImage: `url(${darkbg4})`, backgroundSize: "cover",overflowX:'hidden' }}>
+      <div className="container-fluid " style={{ backgroundImage: `url(${darkbg4})`, backgroundSize: "cover",overflowX:'hidden',minHeight:"100vh" }}>
         <Navbar />
         <div className="row justify-content-center">
           <div className="col-10 ">
-            <h1 className="text-white text-center">COMPLETE USER'S LIST</h1>
+            <h1 className="text-white text-center m-5 p-5">COMPLETE USER'S LIST</h1>
             {user && (
               <input
                 type="text"
@@ -99,9 +99,6 @@ const FullList = () => {
                 value={search}
                 onChange={handleSearchChange}
                 style={{
-                  marginTop: "20vh",
-                  width: "100vw",
-                  padding: "10px",
                   borderRadius: "24px",
                   backgroundColor: "orange",
                 }}

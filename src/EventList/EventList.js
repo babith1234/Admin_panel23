@@ -196,7 +196,8 @@ const EventList = () => {
   const tdStyle = {
     border: "5px solid orange",
     padding: "8px",
-    color: "orange"
+    color: "orange",
+    fontWeight:"bold"
 
   };
 
@@ -317,13 +318,7 @@ const EventList = () => {
 
         </table>
 
-        <div  className="float-end m-3 "   style={{
-          background: `url(${darkbg4})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          width:"100%",
-          padding:"10px"
-        }}>
+        <div  className=" m-3 " style={{position:"fixed", bottom: "-10px", right: "-10px"}}>
           <ReactHTMLTableToExcel
             id={`exportButton`}
             className="download-table-xls-button p-2 rounded bg-warning"
