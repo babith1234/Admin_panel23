@@ -26,7 +26,7 @@ const Login = () => {
 
   return (
     <div className="mt-4">
-      <Navbar />
+      {/* <Navbar /> */}
       <div
         className="login-container login-container-custom"
         style={{
