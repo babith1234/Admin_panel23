@@ -63,18 +63,21 @@ const FullList = () => {
     border: "5px solid orange",
     borderCollapse: "collapse",
     width: "100vw",
+    backgroundColor:'transparent'
   };
 
   const thStyle = {
     border: "5px solid orange",
     padding: "10px",
     color: "orange",
+    backgroundColor:'transparent'
   };
 
   const tdStyle = {
     border: "5px solid orange",
     padding: "8px",
     color: "white",
+    backgroundColor:'transparent'
   };
 
   const handleSearchChange = (e) => {
@@ -83,58 +86,53 @@ const FullList = () => {
 
   return (
     <>
-      <div
-        style={{
-          background: `url(${darkbg4})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          height: "100vh",
-        }}
-      >
+      <div className="container-fluid vh-100 d-flex align-items-center  justify-content-center" style={{ backgroundImage: `url(${darkbg4})`, backgroundSize: "cover",overflowX:'hidden' }}>
         <Navbar />
-        <center>
-          <h1 style={{ color: "white", position: "relative", top: "20vh" }}>
-            COMPLETE USER'S LIST
-          </h1>
-        </center>
-        {user && (
-          <input
-            type="text"
-            placeholder="Search Participant..."
-            value={search}
-            onChange={handleSearchChange}
-            style={{
-              marginTop: "20vh",
-              width: "100vw",
-              padding: "10px",
-              borderRadius: "24px",
-              backgroundColor: "orange",
-            }}
-          />
-        )}
-        <br></br>
-        <br></br>
-        <table style={tableStyle}>
-          <thead>
-            <tr>
-              <th style={thStyle}>UID</th>
-              <th style={thStyle}>NAME</th>
-              <th style={thStyle}>CONTACT</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((row) => (
-              <tr key={row.uid}>
-                <td style={tdStyle}>{row.uid}</td>
-                <td style={tdStyle}>{row.Name}</td>
-                <td style={tdStyle}>{row.Contact}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="row justify-content-center">
+          <div className="col-10 ">
+            <h1 className="text-white text-center">COMPLETE USER'S LIST</h1>
+            {user && (
+              <input
+                type="text"
+                className="form-control mb-4"
+                placeholder="Search Participant..."
+                value={search}
+                onChange={handleSearchChange}
+                style={{
+                  marginTop: "20vh",
+                  width: "100vw",
+                  padding: "10px",
+                  borderRadius: "24px",
+                  backgroundColor: "orange",
+                }}
+              />
+            )}
+            <div className="d-flex justify-content-center" >
+              <table className="table  table-bordered table-hover" style={tableStyle}>
+                <thead className="bg-orange text-white">
+                  <tr>
+                    <th style={thStyle}>UID</th>
+                    <th style={thStyle}>NAME</th>
+                    <th style={thStyle}>CONTACT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData.map((row) => (
+                    <tr key={row.uid}>
+                      <td style={tdStyle}>{row.uid}</td>
+                      <td style={tdStyle}>{row.Name}</td>
+                      <td style={tdStyle}>{row.Contact}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
 };
+
 
 export default FullList;

@@ -218,7 +218,7 @@ const EventList = () => {
           background: `url(${darkbg4})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          height: "100vh",
+          minHeight: "100vh",
         }}
       >
         <Navbar />
@@ -279,7 +279,7 @@ const EventList = () => {
         <table id="table-to-xls" style={tableStyle}>
           <thead>
             <tr>
-              <th style={thStyle1}>SNO</th>
+             
               <th style={thStyle1}>UID</th>
               <th style={thStyle1}>Name</th>
               <th style={thStyle1}>Email</th>
@@ -297,7 +297,7 @@ const EventList = () => {
                   participant.events.map((event, eventIndex) => (
                     Object.keys(event.teamMembers).map((memberKey, memberIndex) => (
                       <tr key={`${participant.UID}-${eventIndex}-${memberIndex}`}>
-                        <td style={tdStyle1}>{index + 1}</td>
+                      
                         <td style={tdStyle1}>{participant.UID}</td>
                         <td style={tdStyle1}>
                           <div key={memberKey}>
@@ -317,10 +317,16 @@ const EventList = () => {
 
         </table>
 
-        <div style={{ marginTop: "20px" }}>
+        <div  className="float-end m-3 "   style={{
+          background: `url(${darkbg4})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          width:"100%",
+          padding:"10px"
+        }}>
           <ReactHTMLTableToExcel
             id={`exportButton`}
-            className="download-table-xls-button"
+            className="download-table-xls-button p-2 rounded bg-warning"
             table="table-to-xls"
             filename={selectedEvent?.label}
             sheet="tablexls"

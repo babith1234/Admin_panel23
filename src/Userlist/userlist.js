@@ -198,7 +198,7 @@ async function handleUserWhilePay() {
           background: `url(${darkbg4})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          height: "100vh",
+          minHeight: "100vh",
         }}
       >
         <Navbar />
@@ -207,55 +207,65 @@ async function handleUserWhilePay() {
             PARTICIPANT DETAILS
           </h1>
         </center>
-        <input
-          type="text"
-          placeholder="Search Participant by UID..."
-          value={search}
-          onChange={handleSearchChange}
-          style={{
-            marginTop: "20vh",
-            width: "100vw",
-            padding: "10px",
-            borderRadius: "24px",
-            backgroundColor: "orange",
-          }}
-        />
-        <button
-          onClick={handleSearchButtonClick}
-          style={{
-            padding: "10px",
-            borderRadius: "24px",
-            backgroundColor: "green",
-            color: "white",
-            cursor: "pointer",
-            marginTop: "10px",
-          }}
-        >
-          Search
-        </button>
-        <br></br>
-        <br></br>
+        <div  style={{ display: "flex", alignItems: "center", width: "50vw", margin: "21vh auto auto"}}>
+  <input
+    type="text"
+    placeholder="Search Participant by UID..."
+    value={search}
+    onChange={handleSearchChange}
+   
+    style={{
+      flex:1,
+      padding: "10px",
+      borderRadius: "24px",
+      backgroundColor: "transparent",
+      color: "white",
+      marginRight: "10px",
+      border:'2px solid orange'
+    }}
+  />
+  <button
+    onClick={handleSearchButtonClick}
+    style={{
+      padding: "10px",
+      borderRadius: "24px",
+      backgroundColor: "green",
+      color: "white",
+      cursor: "pointer",
+    }}
+    className="me-auto "
+  >
+    Search
+  </button>
+</div>
+      
         {participantDetails ? (
           <div className="parent d-flex m-2">
             <div
               className="details text-white m-2 p-5"
               style={{ width: "50%", height: "auto" }}
             >
-              <h2>DETAILS </h2>
+              <h2 className="text-center">DETAILS </h2>
               <br></br>
               <br></br>
-              <div className="sub-heading">
+              <div className="sub-heading text-center">
                 <h3>Name: {participantDetails.Name}</h3>
                 {/* Add more details as needed */}
               </div>
               <br></br>
               <br></br>
-              <h2>EVENT LIST</h2>
-              <ul>
+              <h2 className="text-center">EVENT LIST</h2>
+              {/* <ul>
                 {events.map((event, index) => (
-                  <li key={index}>{event.name}</li>
+                  <li className="text-center" key={index}>{event.name}</li>
                 ))}
-              </ul>
+              </ul> */}
+              <ul className=" p-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  {events.map((event, index) => (
+    <li className="p-2" key={index}>{event.name}</li>
+  ))}
+</ul>
+
             </div>
             <div
               className="entry text-white m-2 p-5"
@@ -300,38 +310,58 @@ async function handleUserWhilePay() {
                         />
                       </div>
                     ))}
-                    <div className="button-list">
-                      {Object.keys(team).length < selectedEvent.maxlimit ? (
-                        <button
-                          className="glow-on-hover p-2 fs-4"
-                          style={{ width: "15rem" }}
-                          onClick={increaseCount}
-                        >
-                          Add Member
-                        </button>
-                      ) : (
-                        <button className="glow-on-hover p-2 fs-4">Max limit reached</button>
-                      )}
-                      <button
-                        className="glow-on-hover p-2 fs-4"
-                        style={{ width: "15rem" }}
-                        onClick={(e) => decreaseCount(e)}
-                      >
-                        Remove Member
-                      </button>
-                    </div>
+                    <div className="button-list m-2">
+  {Object.keys(team).length < selectedEvent.maxlimit ? (
+    <div>
+      <button
+        className="glow-on-hover m-2  fs-4"
+        style={{ width: "15rem" }}
+        onClick={increaseCount}
+      >
+        Add Member
+      </button>
+    </div>
+  ) : (
+    <div>
+      <button className="glow-on-hover m-2 p-2 fs-4">Max limit reached</button>
+    </div>
+  )}
+  <div>
+    <button
+      className="glow-on-hover m-2  fs-4"
+      style={{ width: "15rem" }}
+      onClick={(e) => decreaseCount(e)}
+    >
+      Remove Member
+    </button>
+  </div>
+  <div>
+    <button
+      className="glow-on-hover  m-2 fs-4"
+      style={{ width: "15rem" }}
+      onClick={async (e) => {
+        e.preventDefault();
+        console.log("Submit button clicked");
+        await handleUserWhilePay(); // Call the handleUserWhilePay function
+      }}
+    >
+      Submit
+    </button>
+  </div>
+</div>
+
                   </form>
-                  <button
+                  {/* <button
                     className="glow-on-hover p-2 fs-4"
                     style={{ width: "15rem" }}
                     onClick={async (e) => {
                       e.preventDefault();
                       console.log("Submit button clicked");
-                      await handleUserWhilePay(); // Call the handleUserWhilePay function
+                      await handleUserWhilePay(); 
                     }}
                   >
                     Submit
-                  </button>
+                  </button> */}
                 </>
               )}
             </div>
